@@ -1,0 +1,290 @@
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Smart Climate Health Monitoring</title>
+
+<link rel="stylesheet" href="style.css">
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</head>
+
+<body>
+
+<!-- Animated Background -->
+<div class="animated-bg">
+    <div class="gradient-sphere"></div>
+    <div class="gradient-sphere-2"></div>
+</div>
+
+<!-- Main Container -->
+<div class="container">
+
+<!-- Header with Glassmorphism -->
+<header class="glass-header">
+    <div class="header-content">
+        <i class="fas fa-leaf header-icon"></i>
+        <div class="header-text">
+            <h1>Smart Climate Health Monitoring System</h1>
+            <p class="header-subtitle">Real-time Environmental Analysis & AI-Powered Health Recommendations</p>
+        </div>
+        <div class="header-badge">
+            <span class="live-badge"><i class="fas fa-circle"></i> LIVE</span>
+            <span class="esp-badge"><i class="fas fa-microchip"></i> ESP32: 10.252.36.168</span>
+            <span class="ai-badge"><i class="fas fa-brain"></i> AI Model Active</span>
+        </div>
+    </div>
+</header>
+
+<!-- Connection Status Bar -->
+<div class="connection-bar">
+    <div class="connection-item">
+        <i class="fas fa-plug"></i>
+        <span>ESP32:</span>
+        <span class="status-badge connected" id="espStatus">Connected</span>
+    </div>
+    <div class="connection-item">
+        <i class="fas fa-microchip"></i>
+        <span>IP:</span>
+        <span class="ip-address">10.252.36.168</span>
+    </div>
+    <div class="connection-item">
+        <i class="fas fa-brain"></i>
+        <span>AI Model:</span>
+        <span class="status-badge connected" id="aiStatus">Connected</span>
+    </div>
+    <div class="connection-item">
+        <i class="fas fa-sync-alt"></i>
+        <span>Last Update:</span>
+        <span class="timestamp" id="lastSeen">--:--:--</span>
+    </div>
+</div>
+
+<!-- Live Dashboard Section -->
+<div class="dashboard-section">
+    <div class="section-header">
+        <i class="fas fa-chart-line section-icon"></i>
+        <h2>Live Environment Dashboard</h2>
+        <div class="header-line"></div>
+    </div>
+
+    <div class="dashboard">
+
+        <div class="metric-card temp-card">
+            <div class="metric-icon-wrapper">
+                <i class="fas fa-thermometer-half metric-icon"></i>
+            </div>
+            <div class="metric-content">
+                <span class="metric-label">Temperature</span>
+                <div class="metric-value">
+                    <span id="temp">--</span>
+                    <span class="metric-unit">°C</span>
+                </div>
+                <div class="metric-progress">
+                    <div class="progress-bar" id="tempProgress" style="width: 0%"></div>
+                </div>
+                <div class="metric-range">
+                    <span><i class="fas fa-arrow-down"></i> 0°</span>
+                    <span><i class="fas fa-arrow-up"></i> 50°</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="metric-card humidity-card">
+            <div class="metric-icon-wrapper">
+                <i class="fas fa-tint metric-icon"></i>
+            </div>
+            <div class="metric-content">
+                <span class="metric-label">Humidity</span>
+                <div class="metric-value">
+                    <span id="hum">--</span>
+                    <span class="metric-unit">%</span>
+                </div>
+                <div class="metric-progress">
+                    <div class="progress-bar" id="humProgress" style="width: 0%"></div>
+                </div>
+                <div class="metric-range">
+                    <span><i class="fas fa-arrow-down"></i> 0%</span>
+                    <span><i class="fas fa-arrow-up"></i> 100%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="metric-card air-card">
+            <div class="metric-icon-wrapper">
+                <i class="fas fa-wind metric-icon"></i>
+            </div>
+            <div class="metric-content">
+                <span class="metric-label">Air Quality</span>
+                <div class="metric-value">
+                    <span id="air">--</span>
+                    <span class="metric-unit">AQI</span>
+                </div>
+                <div class="metric-progress">
+                    <div class="progress-bar" id="airProgress" style="width: 0%"></div>
+                </div>
+                <div class="metric-range">
+                    <span><i class="fas fa-arrow-down"></i> Good</span>
+                    <span><i class="fas fa-arrow-up"></i> Hazardous</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- AQI Scale Indicator -->
+    <div class="aqi-scale-container">
+        <div class="aqi-scale-labels">
+            <span>Good</span>
+            <span>Moderate</span>
+            <span>Sensitive</span>
+            <span>Unhealthy</span>
+            <span>Very Bad</span>
+            <span>Hazardous</span>
+        </div>
+        <div class="aqi-scale-bar">
+            <div class="aqi-scale-segment" style="background: #00e400"></div>
+            <div class="aqi-scale-segment" style="background: #ffff00"></div>
+            <div class="aqi-scale-segment" style="background: #ff7e00"></div>
+            <div class="aqi-scale-segment" style="background: #ff0000"></div>
+            <div class="aqi-scale-segment" style="background: #8f3f97"></div>
+            <div class="aqi-scale-segment" style="background: #7e0023"></div>
+        </div>
+        <div class="aqi-marker" id="aqiMarker" style="left: 0%;">▼</div>
+    </div>
+</div>
+
+<!-- Chart Section -->
+<div class="chart-section">
+    <div class="section-header">
+        <i class="fas fa-chart-bar section-icon"></i>
+        <h2>Pollution & Climate Graph</h2>
+        <div class="header-line"></div>
+    </div>
+    <div class="chart-container">
+        <canvas id="chart"></canvas>
+    </div>
+</div>
+
+<!-- User Input Section -->
+<div class="user-section">
+    <div class="section-header">
+        <i class="fas fa-user-md section-icon"></i>
+        <h2>Personal Health Analysis</h2>
+        <div class="header-line"></div>
+    </div>
+
+    <div class="form-container">
+        <form id="userForm">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Full Name</label>
+                    <input type="text" id="name" placeholder="Enter your name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-calendar"></i> Age</label>
+                    <input type="number" id="age" placeholder="Enter age" required>
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-venus-mars"></i> Gender</label>
+                    <select id="gender">
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-heartbeat"></i> Health Condition</label>
+                    <select id="disease">
+                        <option value="none">No Disease</option>
+                        <option value="asthma">Asthma</option>
+                        <option value="chronic">Chronic Respiratory</option>
+                        <option value="heart">Heart Disease</option>
+                        <option value="allergy">Allergies</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button type="submit" class="analyze-btn">
+                <i class="fas fa-magic"></i>
+                Analyze with AI Model
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Recommendations & Actions -->
+<div class="actions-section">
+    <div class="recommendation-card">
+        <div class="rec-header">
+            <i class="fas fa-utensils rec-icon"></i>
+            <h3>AI-Powered Diet Recommendation</h3>
+            <span class="ai-badge-small"><i class="fas fa-brain"></i> AI</span>
+        </div>
+        <div class="rec-content" id="dietAdvice">
+            ⏳ Loading AI recommendations...
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <button onclick="generatePDF()" class="action-btn pdf-btn">
+            <i class="fas fa-file-pdf"></i>
+            <span>Health Report</span>
+        </button>
+        
+        <button onclick="downloadAwareness()" class="action-btn guide-btn">
+            <i class="fas fa-book-open"></i>
+            <span>Awareness Guide</span>
+        </button>
+        
+        <button onclick="testConnections()" class="action-btn test-btn">
+            <i class="fas fa-stethoscope"></i>
+            <span>Test Connection</span>
+        </button>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-left">
+            <i class="fas fa-microchip"></i>
+            <span>ESP32: 10.252.36.168 | MQ135 + DHT22</span>
+        </div>
+        <div class="footer-center">
+            <i class="fas fa-brain"></i>
+            <span>AI Model: 127.0.0.1:5000</span>
+        </div>
+        <div class="footer-right">
+            <span>© 2024 Smart Climate Health</span>
+            <i class="fas fa-heart"></i>
+        </div>
+    </div>
+</footer>
+
+</div>
+
+<!-- JavaScript -->
+<script src="script.js"></script>
+
+</body>
+
+</html>
